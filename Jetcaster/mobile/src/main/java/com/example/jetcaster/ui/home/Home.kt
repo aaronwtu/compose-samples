@@ -94,15 +94,20 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.window.core.layout.WindowSizeClass
 import androidx.window.core.layout.WindowWidthSizeClass
 import com.example.jetcaster.R
+import com.example.jetcaster.core.data.repository.UserInfo
+import com.example.jetcaster.core.data.repository.UserInfoProvider
 import com.example.jetcaster.core.domain.testing.PreviewCategories
 import com.example.jetcaster.core.domain.testing.PreviewPodcastEpisodes
 import com.example.jetcaster.core.domain.testing.PreviewPodcasts
@@ -743,6 +748,11 @@ private fun FollowedPodcastCarouselItem(
     lastEpisodeDateText: String? = null,
     onUnfollowedClick: () -> Unit,
 ) {
+
+    val viewModel: HomeViewModel = hiltViewModel()
+    val address = Integer.toHexString(System.identityHashCode(viewModel))
+    println("HomeViewModel address (FollowedPodcastCarouselItem): $address")
+
     Column(modifier) {
         Box(
             Modifier
@@ -756,7 +766,17 @@ private fun FollowedPodcastCarouselItem(
                     .fillMaxSize()
                     .clip(MaterialTheme.shapes.medium),
             )
-
+            Text(
+                viewModel.userInfoProvider.userInfo.name,
+                style = TextStyle(
+                    color = Color.White,
+                    textAlign = TextAlign.Center
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.Black.copy(alpha = 0.3F))
+                    .padding(10.dp)
+            )
             ToggleFollowPodcastIconButton(
                 onClick = onUnfollowedClick,
                 isFollowed = true, /* All podcasts are followed in this feed */

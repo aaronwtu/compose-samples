@@ -35,6 +35,8 @@ import com.example.jetcaster.core.data.repository.LocalCategoryStore
 import com.example.jetcaster.core.data.repository.LocalEpisodeStore
 import com.example.jetcaster.core.data.repository.LocalPodcastStore
 import com.example.jetcaster.core.data.repository.PodcastStore
+import com.example.jetcaster.core.data.repository.UserInfo
+import com.example.jetcaster.core.data.repository.VipInfo
 import com.rometools.rome.io.SyndFeedInput
 import dagger.Module
 import dagger.Provides
@@ -50,8 +52,16 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.LoggingEventListener
 
 @Module
+/// 全局：就是对Retrofit的注入。
+// TODO: Retrofit 是啥 
 @InstallIn(SingletonComponent::class)
-object DataDiModule {
+// 两种不同的用法
+// 会在Application#onCreate的时候去new出一个NormalModule的实例对象，
+// 在Application#onDestroy的时候回收这个对象。
+ class DataDiModule {
+
+// 全局单例
+//object DataDiModule {
 
     @Provides
     @Singleton
@@ -165,4 +175,14 @@ object DataDiModule {
         categoriesDao = categoriesDao,
         categoryEntryDao = podcastCategoryEntryDao,
     )
+
+    @Provides
+    fun provideUserInfo(): UserInfo {
+        return UserInfo()
+    }
+
+    @Provides
+    fun provideVipInfo(): VipInfo {
+        return VipInfo(isVip = true)
+    }
 }

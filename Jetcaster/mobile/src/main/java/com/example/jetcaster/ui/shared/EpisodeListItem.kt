@@ -18,11 +18,13 @@ package com.example.jetcaster.ui.shared
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -40,16 +42,21 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.jetcaster.R
+import com.example.jetcaster.core.data.repository.UserInfoProvider
 import com.example.jetcaster.core.domain.testing.PreviewEpisodes
 import com.example.jetcaster.core.domain.testing.PreviewPodcasts
 import com.example.jetcaster.core.model.EpisodeInfo
@@ -57,9 +64,11 @@ import com.example.jetcaster.core.model.PodcastInfo
 import com.example.jetcaster.core.player.model.PlayerEpisode
 import com.example.jetcaster.designsystem.component.HtmlTextContainer
 import com.example.jetcaster.designsystem.component.PodcastImage
+import com.example.jetcaster.ui.home.HomeViewModel
 import com.example.jetcaster.ui.theme.JetcasterTheme
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
+import javax.inject.Inject
 
 @Composable
 fun EpisodeListItem(
@@ -71,6 +80,10 @@ fun EpisodeListItem(
     showPodcastImage: Boolean = true,
     showSummary: Boolean = false,
 ) {
+    val viewModel: HomeViewModel = hiltViewModel()
+    val address = Integer.toHexString(System.identityHashCode(viewModel))
+    println("HomeViewModel address(EpisodeListItem): $address")
+
     Box(modifier = modifier.padding(vertical = 8.dp, horizontal = 16.dp)) {
         Surface(
             shape = MaterialTheme.shapes.large,
@@ -88,7 +101,17 @@ fun EpisodeListItem(
                     showSummary = showSummary,
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
-
+                Text(
+                    viewModel.userInfoProvider.userInfo.name,
+                    style = TextStyle(
+                        color = Color.White,
+                        textAlign = TextAlign.Center
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color.Black.copy(alpha = 0.3F))
+                        .padding(10.dp)
+                )
                 // Bottom Part
                 EpisodeListItemFooter(
                     episode = episode,

@@ -23,6 +23,7 @@ import com.example.jetcaster.core.data.database.model.EpisodeToPodcast
 import com.example.jetcaster.core.data.repository.EpisodeStore
 import com.example.jetcaster.core.data.repository.PodcastStore
 import com.example.jetcaster.core.data.repository.PodcastsRepository
+import com.example.jetcaster.core.data.repository.UserInfoProvider
 import com.example.jetcaster.core.domain.FilterableCategoriesUseCase
 import com.example.jetcaster.core.domain.PodcastCategoryFilterUseCase
 import com.example.jetcaster.core.model.CategoryInfo
@@ -57,6 +58,7 @@ class HomeViewModel @Inject constructor(
     private val podcastCategoryFilterUseCase: PodcastCategoryFilterUseCase,
     private val filterableCategoriesUseCase: FilterableCategoriesUseCase,
     private val episodePlayer: EpisodePlayer,
+    val userInfoProvider: UserInfoProvider,
 ) : ViewModel() {
     // Holds our currently selected podcast in the library
     private val selectedLibraryPodcast = MutableStateFlow<PodcastInfo?>(null)

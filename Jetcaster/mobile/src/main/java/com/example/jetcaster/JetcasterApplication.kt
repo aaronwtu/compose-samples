@@ -25,6 +25,7 @@ import javax.inject.Inject
 /**
  * Application which sets up our dependency [Graph] with a context.
  */
+/// 1、必须使用 HiltAndroidApp 注解包裹程序入口
 @HiltAndroidApp
 class JetcasterApplication : Application(), ImageLoaderFactory {
 
